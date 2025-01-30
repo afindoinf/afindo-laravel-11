@@ -13,8 +13,8 @@
         </div>
     @endif
 
-    <div class="modal fade" id="modal_cropper" role="dialog" aria-labelledby="modalLabel" aria-hidden="true"
-        data-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="modal_cropper_{{ $id }}" role="dialog" aria-labelledby="modalLabel"
+        aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -24,11 +24,12 @@
                     </button>
                 </div>
                 <div class="modal-body p-0" style="max-height: 75vh; overflow: auto;">
-                    <img id="imageCropping" src="">
+                    <img id="imageCropping_{{ $id }}" src="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary modal-hide" data-dismiss="modal">Close</button>
-                    <button type="button" id="cropButton" class="btn btn-primary">Crop & Save</button>
+                    <button type="button" id="cropButton_{{ $id }}" class="btn btn-primary">Crop &
+                        Save</button>
                 </div>
             </div>
         </div>
@@ -41,7 +42,7 @@
             $('.dropify').dropify();
 
             let cropper = null;
-            let imageCropping = $('#imageCropping')[0];
+            let imageCropping = $('#imageCropping_{{ $id }}')[0];
             let croppedImageName = '';
             let croppedImageFile = null;
 
@@ -53,13 +54,13 @@
                     let reader = new FileReader();
                     reader.onload = function(event) {
                         imageCropping.src = event.target.result;
-                        $('#modal_cropper').modal('show');
+                        $('#modal_cropper_{{ $id }}').modal('show');
                     };
                     reader.readAsDataURL(file);
                 }
             });
 
-            $('#modal_cropper').on('shown.bs.modal', function() {
+            $('#modal_cropper_{{ $id }}').on('shown.bs.modal', function() {
                 cropper = new Cropper(imageCropping, {
                     viewMode: 1,
                     aspectRatio: '{{ $lebar }}' / '{{ $panjang }}',
@@ -69,7 +70,7 @@
                 cropper = null;
             });
 
-            $("#cropButton").click(function() {
+            $("#cropButton_{{ $id }}").click(function() {
                 if (cropper) {
                     cropper.getCroppedCanvas({
                         width: 800,
@@ -84,7 +85,6 @@
                         reader.onloadend = function() {
                             let base64data = reader.result;
 
-                            // Reset Dropify preview
                             let dropifyElement = $('#{{ $id }}').data('dropify');
                             dropifyElement.resetPreview();
                             dropifyElement.clearElement();
@@ -102,7 +102,7 @@
 
                             resetPreview('{{ $name }}', base64data, 'Image.png');
 
-                            $('#modal_cropper').modal('hide');
+                            $('#modal_cropper_{{ $id }}').modal('hide');
                         };
                     }, 'image/png');
                 }
@@ -115,7 +115,6 @@
                 let filename = wrapper.find('.dropify-filename-inner');
                 let render = wrapper.find('.dropify-render').html('');
 
-                //input.val('').attr('title', fname);
                 input.attr('title', fname);
                 wrapper.removeClass('has-error').addClass('has-preview');
                 filename.html(fname);
@@ -125,8 +124,7 @@
 
             function deleteImage(id) {
                 $('#' + id).dropify().clearElement();
-                $('input[name="{{ $name }}"]').val(
-                    '');
+                $('input[name="{{ $name }}"]').val('');
             }
 
             $('.modal-hide').click(function() {

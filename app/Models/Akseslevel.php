@@ -20,11 +20,23 @@ class Akseslevel extends MyModel
     public function get_fitur($kodelevel = '')
     {
         $data = DB::table('fiturlevel')
-        ->selectRaw('fiturlevel.KodeFitur, fiturlevel.ViewData, fiturlevel.AddData, fiturlevel.EditData, fiturlevel.EditData, fiturlevel.DeleteData, fiturlevel.PrintData, serverfitur.NamaFitur, serverfitur.KelompokFitur, serverfitur.Icon, serverfitur.Url, serverfitur.Slug')
+        ->selectRaw('fiturlevel.KodeFitur, fiturlevel.ViewData, fiturlevel.AddData, fiturlevel.EditData, fiturlevel.EditData, fiturlevel.DeleteData, fiturlevel.PrintData, serverfitur.NamaFitur, serverfitur.KelompokFitur, serverfitur.Icon, serverfitur.Url, serverfitur.Slug, serverfitur.Method')
         ->leftJoin('serverfitur', function ($join) {
             $join->on('serverfitur.KodeFitur', '=', 'fiturlevel.KodeFitur');
-        })->where('fiturlevel.KodeLevel', $kodelevel)
+        })
+        ->when($kodelevel, function ($query, $kodelevel) {
+            return $query->where('fiturlevel.KodeLevel', $kodelevel);
+        })
         ->where('fiturlevel.ViewData', 1)
+        ->where('serverfitur.IsAktif', 1)
+        ->orderBy('serverfitur.NoUrut');
+        return $data->get();
+    }
+
+    public function get_server_fitur()
+    {
+        $data = DB::table('serverfitur')
+        ->selectRaw('serverfitur.KodeFitur, serverfitur.NamaFitur, serverfitur.KelompokFitur, serverfitur.Icon, serverfitur.Url, serverfitur.Slug, serverfitur.Method, serverfitur.NoUrut')
         ->where('serverfitur.IsAktif', 1)
         ->orderBy('serverfitur.NoUrut');
         return $data->get();

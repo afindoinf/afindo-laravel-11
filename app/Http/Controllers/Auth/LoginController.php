@@ -22,6 +22,7 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+    private $akses;
 
     /**
      * Create a new controller instance.
@@ -64,9 +65,11 @@ class LoginController extends Controller
             ], 401);
         }
 
+        $allAksesLevel = $this->akses->get_server_fitur();
         $akseslevel = $this->akses->get_fitur($user->KodeLevel);
         session()->put('user', $user);
-        Cache::forever('akses_user', $akseslevel);
+        session()->put('akses_user', $akseslevel);
+        Cache::forever('all_akses', $allAksesLevel);
 
         if (Auth::attempt($credentials)) {
             return response()->json([
@@ -103,7 +106,7 @@ class LoginController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        Cache::forget('akses_user');
+        Cache::forget('all_akses');
         return redirect('/');
     }
 }

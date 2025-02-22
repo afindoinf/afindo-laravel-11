@@ -13,7 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->prepend(\Illuminate\Session\Middleware\StartSession::class);
+
+        $middleware->alias([
+            'cek.akses.user' => \App\Http\Middleware\CekAksesUser::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (HttpException $exception, Request $request) {
@@ -22,10 +26,10 @@ return Application::configure(basePath: dirname(__DIR__))
             /* if ($statusCode == 400) {
                 return response()->view("errors.400", [], 400);
             }
-
+            */
             if ($statusCode == 403) {
                 return response()->view("errors.403", [], 403);
-            } */
+            }
 
             if ($statusCode == 404) {
                 return response()->view("errors.404", [], 404);
@@ -40,6 +44,6 @@ return Application::configure(basePath: dirname(__DIR__))
             } */
 
             //return response()->view('errors.default', [], $statusCode);
-            return response()->view('errors.404', [], $statusCode);
+            return response()->view('errors.500', [], $statusCode);
         });
     })->create();

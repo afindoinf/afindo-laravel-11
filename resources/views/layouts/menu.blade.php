@@ -1,5 +1,6 @@
 @php
-    $data_fitur = cache("akses_user")->toArray();
+    //$data_fitur = cache("akses_user")->toArray();
+    $data_fitur = session()->get("akses_user")->toArray();
     $arr = [];
     $jumlahmenu = count($data_fitur);
 @endphp

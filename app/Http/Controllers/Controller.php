@@ -9,9 +9,9 @@ abstract class Controller extends \Illuminate\Routing\Controller
     use AuthorizesRequests;
     private $akses;
 
-
-    public function getAkses(){
-        $allAkses = cache()->get('akses_user');
+    public function getAkses()
+    {
+        $allAkses = session()->get('akses_user');
         if ($allAkses == null) {
             return [];
         }

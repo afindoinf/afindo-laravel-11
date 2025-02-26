@@ -11,20 +11,18 @@ class FileInput extends Component
     public $name;
     public $url;
     public $label;
+    public $accept;
+    public $id;
 
-    /**
-     * Create a new component instance.
-     */
-    public function __construct($name, $url = null, $label = 'Choose File')
+    public function __construct($name, $url = null, $label = 'Choose File', $accept = '*/*')
     {
         $this->name = $name;
         $this->url = $url;
         $this->label = $label;
+        $this->accept = $accept;
+        $this->id = uniqid('fileinput_');
     }
-
-    /**
-     * Get the view / contents that represent the component.
-     */
+    
     public function render(): View|Closure|string
     {
         return view('components.file-input');

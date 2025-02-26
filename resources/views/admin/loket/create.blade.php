@@ -29,16 +29,12 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="label-control">Nama Loket</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="Masukkan Nama Loket" name="NamaLoket"
-                                                    value="{{ @$data["NamaLoket"] }}" required>
+                                                <input type="text" class="form-control" placeholder="Masukkan Nama Loket"
+                                                    name="NamaLoket" value="{{ @$data["NamaLoket"] }}" required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="label-control">File Gambar</label>
                                                 <x-image-upload id="FotoLoket" name="FotoLoket" :value="$fotoLoket"
-                                                    :url="$urlFotoLoket" :panjang="3" :lebar="3" />
-
-                                                    <x-image-upload id="GambarLoket" name="GambarLoket" :value="$fotoLoket"
                                                     :url="$urlFotoLoket" :panjang="3" :lebar="3" />
                                             </div>
                                             <div class="form-group">
@@ -55,14 +51,16 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="label-control">No. Loket</label>
-                                                <input type="number" class="form-control"
-                                                    placeholder="Masukkan No Loket" name="NoLoket"
-                                                    value="{{ @$data["NoLoket"] }}" required>
+                                                <input type="number" class="form-control" placeholder="Masukkan No Loket"
+                                                    name="NoLoket" value="{{ @$data["NoLoket"] }}" required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="label-control">File Audio</label>
-                                                <x-file-input name="FileAudio" label="Upload Audio File"
-                                                    :url="$urlFileAudio" />
+                                                <x-file-input name="FileAudio" label="Upload Audio File" :url="$urlFileAudio"
+                                                    accept="audio/*" />
+                                                <x-file-input name="FileImage" label="Upload Image File" accept="image/*" />
+                                                <x-file-input name="FileDocument" label="Upload Document File"
+                                                    accept=".pdf,.docx" />
                                             </div>
                                             <div class="form-group">
                                                 <label>Tanggal Loket</label>

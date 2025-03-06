@@ -255,6 +255,7 @@
 @push('scripts')
     <script>
         var selectedIds = [];
+        let table;
 
         $(document).ready(function() {
 
@@ -286,7 +287,7 @@
                 }
             });
 
-            var table = $('.yajra-datatable').DataTable({
+            table = $('.yajra-datatable').DataTable({
                 order: [],
                 processing: true,
                 serverSide: true,

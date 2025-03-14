@@ -102,6 +102,13 @@
                             </div>
                         @endif
 
+                        @if ($filter['type'] == 'month')
+                            <div class="form-group col-4">
+                                {!! isset($filter['label']) && $filter['label'] != '' ? '<label>' . $filter['label'] . '</label>' : '' !!}
+                                <input type="month" class="form-control form-control-xl input-xl" id="{{ $filter['id'] }}">
+                            </div>
+                        @endif
+
                         @if ($filter['type'] == 'select')
                             <div class="form-group col-4 filter-input">
                                 {!! isset($filter['label']) && $filter['label'] != '' ? '<label>' . $filter['label'] . '</label>' : '' !!}
@@ -122,7 +129,7 @@
                                 {!! isset($filter['label']) && $filter['label'] != '' ? '<label>' . $filter['label'] . '</label>' : '' !!}
                                 <fieldset class="form-group position-relative mb-0 filter-input">
                                     <input type="text" class="form-control form-control-xl input-xl"
-                                        id="{{ $filter['id'] }}" placeholder="Pencarian ...">
+                                        id="{{ $filter['id'] }}" placeholder="{{ isset($filter['placeholder']) ? $filter['placeholder'] : 'Pencarian ...' }}">
                                     <div class="form-control-position">
                                         <i class="feather icon-search font-medium-4"></i>
                                     </div>
@@ -248,6 +255,7 @@
 @push('scripts')
     <script>
         var selectedIds = [];
+        let table;
 
         $(document).ready(function() {
 
@@ -279,7 +287,7 @@
                 }
             });
 
-            var table = $('.yajra-datatable').DataTable({
+            table = $('.yajra-datatable').DataTable({
                 order: [],
                 processing: true,
                 serverSide: true,
